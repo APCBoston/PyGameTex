@@ -1,0 +1,33 @@
+trigger:
+- development
+
+pool:
+  vmImage: windows-latest
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.11'
+- script: |
+    python -m pip install --upgrade pip setuptools wheel
+    python -m pip install -r dependencies.txt
+    python -m pip install pyinstaller
+    python -m PyInstaller .\src\pygametex\pygametex.py
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Pipeline.Workspace)/s/dist'
+    artifact: 'Result'
+    publishLocation: 'pipeline'
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Pipeline.Workspace)/s/build'
+    artifact: 'Builddir'
+    publishLocation: 'pipeline'
+# - task: UniversalPackages@0
+#  inputs:
+#    command: 'publish'
+#    publishDirectory: '$(Build.ArtifactStagingDirectory)'
+#    feedsToUsePublish: 'internal'
+#    vstsFeedPublish: '5259f689-1d80-4e14-b63b-3d4413015950/e8228bbd-ffe0-4095-ad56-754d1b8b78ea'
+#    vstsFeedPackagePublish: 'PyGameTex'
+#    versionOption: 'patch'
