@@ -18,6 +18,11 @@ steps:
     targetPath: '$(Pipeline.Workspace)/s/dist'
     artifact: 'Result'
     publishLocation: 'pipeline'
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Pipeline.Workspace)/s/build'
+    artifact: 'Builddir'
+    publishLocation: 'pipeline'
 # - task: UniversalPackages@0
 #  inputs:
 #    command: 'publish'
