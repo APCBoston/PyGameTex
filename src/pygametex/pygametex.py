@@ -20,7 +20,7 @@ import shlex
 from warnings import warn
 import os
 import tempfile
-from config import *  # pylint: disable=wildcard-import, unused-wildcard-import
+from . config import *  # pylint: disable=wildcard-import, unused-wildcard-import
 
 
 def read_names_file(filename: str) -> dict:  # pylint: disable=too-many-locals
