@@ -6,7 +6,7 @@ block_cipher = None
 
 a = Analysis(
     ['pygametex.py'],
-    pathex=['.', './utils'],
+    pathex=['.', './utils', './src/pygametex/utils'],
     binaries=[],
     datas=[],
     hiddenimports=[],
