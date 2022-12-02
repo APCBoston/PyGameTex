@@ -77,12 +77,13 @@ def build_cmd(charname: str, filename: str, draft=False) -> list[str]:
         raise TypeError("Buildcmd received a filename that was not a string!")
 
     job_flags = JOBFLAG + charname.replace(" ", "_") + "_Charsheet"
-    command = TEXCMD + job_flags + OUTDIR + RUNFLAGS
+    command = job_flags + OUTDIR + RUNFLAGS
     if draft:
         command += "--draft"
     command = command + INCLUDES + " " + filename
-    arrgh = shlex.split(command, posix=POSIX)  # POSIX is a bool defined in config.py
-    return arrgh
+    argh = [TEXCMD]
+    argh.extend(shlex.split(command, posix=POSIX))  # POSIX is a bool defined in config.py
+    return argh
 
 
 def render_pdf(charname: str, texfile: str, draft=False) -> int:
