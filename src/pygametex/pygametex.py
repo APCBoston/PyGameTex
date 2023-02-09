@@ -115,7 +115,8 @@ def render_pdf_from_list(
     list_file_path = os.path.join(GAMEBASE, "Production", "listchar-PRINT.tex")
     exists = Path.exists(Path(list_file_path))
     if exists:
-        with tempfile.NamedTemporaryFile(mode="wt", suffix=".tex") as temp_file:
+        filehandle, tempfile_abs_path = tempfile.mkstemp(suffix='.tex', text=True)
+        with os.fdopen(filehandle, mode='wt', encoding='utf-8') as temp_file:
             text_to_write = (
                 r"\documentclass[listchar]{GL2020}"
                 r"\begin{document}"
@@ -123,9 +124,10 @@ def render_pdf_from_list(
                 r"\end{document}"
             )
             temp_file.write(text_to_write)
-            temp_file.flush()
-            arrgh = build_cmd(charname, temp_file.name)
-            retcode = subprocess.run(arrgh, check=True).returncode  # nosec
+            arrgh = build_cmd(charname, tempfile_abs_path)
+            temp_file.close()
+        retcode = subprocess.run(arrgh, check=True).returncode  # nosec
+        os.remove(tempfile_abs_path)
         return retcode
 
     raise FileNotFoundError(f"Error! File {list_file_path} not found!")
